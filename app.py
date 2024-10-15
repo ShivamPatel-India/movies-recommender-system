@@ -12,10 +12,17 @@ def fetch_poster(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US"
     data = requests.get(url)
     data = data.json()
-    poster_path = data['poster_path']
-    full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
-    return full_path
 
+     # Log the data for debugging
+    print(data) 
+
+    if 'poster_path' in data and data['poster_path']:
+        poster_path = data['poster_path']
+        full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
+        return full_path
+    else:
+        return "https://via.placeholder.com/500x750?text=No+Poster+Available"
+    
 def recommend(movie):
     index = movies[movies['title'] == movie].index[0]
     distances = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])
